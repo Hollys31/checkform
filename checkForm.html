@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			a{
+				color: #333;
+				text-decoration: none;
+			}
+			img{
+				display: block;
+			}
+			ul{
+				list-style: none;
+			}
+			body{
+				font-family: "Microsoft Yahei";
+			}
+			.areaWidth{
+				width: 1200px;
+				margin: 0 auto;
+				color: #333;
+			}
+			.formSub{background:#f4f4f4;padding-bottom:50px}
+			.formSub form{padding:0 50px;width:1100px}
+			.formSub h2,.formSub li{height:90px;padding-left:100px}
+			.formSub h2{font-size:18px;text-align:left;line-height:90px;padding-top:30px}
+			.formSub li{float:left;width:400px}
+			.formSub li label{display:block;font-size:14px;font-weight:700;color:#433535;line-height:2.2em}
+			.formSub li label span{color:#de3327;font-size:12px;margin-left:20px;display:none}
+			.formSub li input{width:284px;height:39px;line-height:39px;border:1px solid #e7e7e7;background:#f9f9f9;padding-left:10px}
+			.formSub li .err{border:2px solid #de3327}
+			.formSub li input.err:focus{-moz-outline-style:none;outline:0}
+			.formSub li .checkcode{width:110px;height:37px;line-height:37px;float:left;background:#fff;border-radius:3px;border:1px solid #e7e7e7;text-align:center}
+			.formSub li .checkcode p{display:inline-block;width:20px;height:30px;font-size:30px}
+			.formSub li .checkcodeInp{width:172px;float:left}
+			.formSub .subm{width:247px;height:60px;line-height:60px;color:#fff;text-align:center;background:#de3327;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;border:none;margin-left:300px;margin-top:30px;margin-bottom:60px;font-weight:700;font-size:21px}
+			
+		</style>
+	</head>
+	<body>
+		<div class="formSub">
+    			<form class="areaWidth formCon" id="serviceForm">
+    				<h2>填写以下表单获取汇诚行商业地产顾问服务</h2>
+    				<ul class="clear">
+						<li><label>项目名称<span class="must-text">项目名称不能为空</span></label><input type="text" class="must pname" name="projectName"/></li>
+						<li><label>项目地址<span class="must-text">项目地址不能为空</span></label><input type="text" class="must paddress" name="projectAddress"/></li>
+						<li><label>联系人<span class="must-text">联系人不能为空</span></label><input type="text" class="must cname" name="linkman"/></li>
+						<li><label>联系方式<span class="must-text">联系方式不能为空</span></label><input type="text" class="must ctel" name="phoneNum"/></li>
+						<li><label>验证码<span class="must-text">验证码不能为空</span></label><div class="clear"><div id='checkcode' class="checkcode " style="padding-top:0;overflow:hidden"alt='点击换下一张'></div><input type="text" class="checkcodeInp"></div></li>
+						<input type="hidden" name="serviceType" value="1"/>
+					</ul>
+					<input type="button" class="subm" value="提交需求">
+    				
+    			</form>
+
+    	</div>
+	</body>
+</html>
+<script type="text/javascript" src="jquery1.42.min.js"></script>
+<script>
+	//form 输入框验证
+    function checkAct(clas){
+    	this.clas=clas;
+    }
+   checkAct.prototype={
+   		addCheck:function(){
+   			this.clas.focus()
+		    .addClass('err')
+    		.prev().find('.must-text').show();
+   		},
+   		addCheck1:function(){
+   			this.clas.focus()
+			.addClass('err')
+			.parent().prev().find('.must-text').show();
+   		},
+   		removeCheck:function(){
+   			this.clas.removeClass('err');
+			$('.must-text').hide();
+   		}
+   }		
+	function checkForm(){
+		var ctel=$('.ctel'),
+		    checkcodeInp=$('.checkcodeInp'),
+		    formInp=$('.formSub li input'),
+		    regPhone=/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+		var defaultCheck=new checkAct(formInp);
+		defaultCheck.removeCheck();
+		for(var i=0;i<formInp.length;i++){
+			var chechAct=new checkAct($(formInp[i]));
+			if(formInp[i].value.length==0){			
+				chechAct.addCheck();
+				if(i==formInp.length-1){
+					chechAct.addCheck1();
+				}
+			return false;
+			}
+			if(i==formInp.length-2){
+				if(!regPhone.test($('.ctel').val())){
+		        	ctel.prev().find('.must-text').html("格式错误");
+		    		chechAct.addCheck();
+		    		return false;
+		        }
+			}
+			if(i==formInp.length-1){
+				if(formInp[i].value!=nodeString.join('')){
+					$(formInp[i]).parent().prev().find('.must-text').html("验证码输入错误");
+					chechAct.addCheck1();
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+})
+</script>
